@@ -41,6 +41,14 @@ namespace CawCaw.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
+            [Display(Name = "Handle")]
+            public string Handle { get; set; }
+
+            [Required]
+            [Display(Name = "Display name")]
+            public string DisplayName { get; set; }
+
+            [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -67,7 +75,7 @@ namespace CawCaw.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
+                var user = new ApplicationUser { UserName = Input.Handle, Email = Input.Email, DisplayName = Input.DisplayName };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

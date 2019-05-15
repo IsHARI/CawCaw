@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CawCaw.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190514210234_AddPostModel")]
+    [Migration("20190515142244_AddPostModel")]
     partial class AddPostModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,6 +71,24 @@ namespace CawCaw.Data.Migrations
                         .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("CawCaw.Models.Post", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Author")
+                        .IsRequired();
+
+                    b.Property<string>("PostText")
+                        .IsRequired();
+
+                    b.Property<DateTime>("Timestamp");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Post");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

@@ -18,5 +18,7 @@ namespace CawCaw.Data
         {
             base.OnModelCreating(builder);
         }
+
+        public DbSet<Post> Post { get; set; }
     }
 }

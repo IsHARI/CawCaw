@@ -45,6 +45,8 @@ namespace CawCaw.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            List<Post> PostList = _db.Post.Include("Author").ToList();
+            IndexModel = new Index {Posts = PostList};
             return View(IndexModel);
         }
 

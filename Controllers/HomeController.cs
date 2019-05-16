@@ -8,22 +8,28 @@ using CawCaw.Models;
 using System.ComponentModel.DataAnnotations;
 using CawCaw.Views.Home;
 using CawCaw.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace CawCaw.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext _db;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public HomeController(ApplicationDbContext db)
+        public HomeController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
         {
             _db = db;
+            _userManager = userManager;
         }
 
         public Index IndexModel { get; set; }
 
         public IActionResult Index()
         {
+            List<Post> PostList = _db.Post.Include("Author").ToList();
+            IndexModel = new Index {Posts = PostList};
             return View(IndexModel);
         }
 
@@ -32,7 +38,8 @@ namespace CawCaw.Controllers
         {
             if(ModelState.IsValid)
             {
-                Post Post = new Post {PostText = indexModel.InputText, Timestamp = DateTime.Now, Author = User.Identity.Name};
+                var AuthorUser = await _userManager.GetUserAsync(User);
+                Post Post = new Post {PostText = indexModel.InputText, Timestamp = DateTime.Now, Author = AuthorUser};
                 _db.Add(Post);
                 await _db.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

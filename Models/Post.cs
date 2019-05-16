@@ -11,6 +11,7 @@ namespace CawCaw.Models
         public ApplicationUser Author { get; set; }
 
         [Required]
+        [MaxLength(140)]
         public string PostText { get; set; }
 
         [Required]

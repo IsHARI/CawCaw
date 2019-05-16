@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CawCaw.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190515142244_AddPostModel")]
-    partial class AddPostModel
+    [Migration("20190516180232_FreshStart")]
+    partial class FreshStart
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -78,7 +78,7 @@ namespace CawCaw.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Author")
+                    b.Property<string>("AuthorId")
                         .IsRequired();
 
                     b.Property<string>("PostText")
@@ -87,6 +87,8 @@ namespace CawCaw.Data.Migrations
                     b.Property<DateTime>("Timestamp");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
 
                     b.ToTable("Post");
                 });
@@ -200,6 +202,14 @@ namespace CawCaw.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("CawCaw.Models.Post", b =>
+                {
+                    b.HasOne("CawCaw.Models.ApplicationUser", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

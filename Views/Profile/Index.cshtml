@@ -1,0 +1,42 @@
+﻿@model CawCaw.Views.Profile.Profile
+
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h3>@Model.ProfileUser.DisplayName</h3>
+<h6>&commat;@Model.ProfileUser.UserName</h6>
+
+@if(Model.Current)
+{
+    <br/>
+    <div class="row">
+        <div class="col-md-4">
+            <form method="post" asp-action="Index">
+                <div class="form-group">
+                    <textarea asp-for="InputText" class="form-control" ></textarea>
+                    <span asp-validation-for="InputText" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary">Post</button>
+            </form>
+        </div>
+    </div>
+    <br />
+}
+
+@foreach (var post in Model.Posts.OrderByDescending(post => post.Timestamp))
+{
+    <br />
+    <div class="row">
+        <div class="col">
+            <p>
+                @post.PostText
+            </p>
+            <span>@post.Timestamp.ToString()</span>
+        </div>
+    </div>
+    <br />
+}
+
